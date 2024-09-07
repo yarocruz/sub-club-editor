@@ -1,0 +1,38 @@
+#subclub-form-container {
+    max-width: 500px;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+}
+
+#subclub-text {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
+}
+
+#subclub-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+#char-count {
+    color: #666;
+}
+
+#subclub-button {
+    background-color: #1da1f2;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+#subclub-button:disabled {
+    background-color: #9fd0f1;
+    cursor: not-allowed;
+}
