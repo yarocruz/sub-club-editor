@@ -1,6 +1,10 @@
+const subclubForm = document.getElementById('subclub-form');
 const subclubText = document.getElementById('subclub-text');
 const charCount = document.getElementById('char-count');
 const subclubButton = document.getElementById('subclub-button');
+const fileInput = document.getElementById('file-input');
+
+let imageFile = null;
 
 subclubText.addEventListener('input', function () {
     const remainingChars = 500 - this.value.length;
@@ -8,29 +12,38 @@ subclubText.addEventListener('input', function () {
     subclubButton.disabled = this.value.length === 0;
 });
 
-document.getElementById('subclub-form').addEventListener('submit', function (e) {
+fileInput.addEventListener('change', function (e) {
+    imageFile = e.target.files[0];
+});
+
+console.log(imageFile);
+
+subclubForm.addEventListener('submit', async function (e) {
     e.preventDefault();
-    // Here you would typically send the subclub data to your server
-    console.log('Subclub post submitted:', subclubText.value);
 
-    const raw = `{\n \"content\": \"${subclubText.value}\"\n}`;
+    const formData = new FormData();
+    formData.append('content', subclubText.value);
+    console.log(formData);
 
-    const options = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: raw,
-    };
+    if (imageFile) {
+        formData.append('media', imageFile, imageFile.name);
+    }
 
-    fetch("http://localhost:3000/api/proxy", options)
-        .then(response => response.text())
-        .then(data => {
-            console.log(data);
-        })
-        .catch(error => console.log('error', error));
+    try {
+        const response = await fetch('http://localhost:3000/api/proxy', {
+            method: 'POST',
+            body: formData
+        });
+        const result = await response.json();
+        console.log(result);
+    } catch (error) {
+        console.error('Error:', error);
+    }
 
+    // RESETS
     subclubText.value = '';
     charCount.textContent = '500';
     subclubButton.disabled = true;
+    fileInput.value = '';
+    imageFile = null;
 });
